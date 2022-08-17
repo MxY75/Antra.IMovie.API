@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IMovieCRMAPI", "ImovieCRMAPI\IMovieCRMAPI.csproj", "{9DA9272D-F1D2-46E6-9703-0D27696D39AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antra.IMovie.Core", "Antra.IMovie.Core\Antra.IMovie.Core.csproj", "{C79D36A5-78D1-498D-B57B-778D906834C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antra.IMovie.Infrascruture", "Antra.IMovie.Infrascruture\Antra.IMovie.Infrascruture.csproj", "{AB228DFE-123A-4752-AF07-21344BC739DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9DA9272D-F1D2-46E6-9703-0D27696D39AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DA9272D-F1D2-46E6-9703-0D27696D39AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DA9272D-F1D2-46E6-9703-0D27696D39AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DA9272D-F1D2-46E6-9703-0D27696D39AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C79D36A5-78D1-498D-B57B-778D906834C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C79D36A5-78D1-498D-B57B-778D906834C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C79D36A5-78D1-498D-B57B-778D906834C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C79D36A5-78D1-498D-B57B-778D906834C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB228DFE-123A-4752-AF07-21344BC739DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB228DFE-123A-4752-AF07-21344BC739DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB228DFE-123A-4752-AF07-21344BC739DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB228DFE-123A-4752-AF07-21344BC739DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6E55241A-A188-4B35-B136-EFC6FCB1658C}
+	EndGlobalSection
+EndGlobal
