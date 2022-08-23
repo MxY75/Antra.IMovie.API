@@ -10,13 +10,15 @@ namespace IMovieCRMAPI.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
 
     public class CastController : ControllerBase
     {
         ICastService castService;
-        public CastController(ICastService castService)
+        IMovieCastServiceAsync movieCastServiceAsync;
+        public CastController(ICastService castService,IMovieCastServiceAsync movieCastServiceAsync)
         {
+            this.movieCastServiceAsync = movieCastServiceAsync;
             this.castService = castService;
         }
 
@@ -32,7 +34,7 @@ namespace IMovieCRMAPI.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("createCast")]
         public async Task<IActionResult> Post(CastModel castModel){
             if (ModelState.IsValid)
             {
@@ -44,8 +46,17 @@ namespace IMovieCRMAPI.Controllers
             return BadRequest();    
         }
 
-        
-  }
+
+        [HttpGet("getMoviesbyCast")]
+        public async Task<IActionResult> Detail(int id)
+        {
+            CastModel model = await castService.GetCastByIdAsync(id);
+            model.MovieCasts = await movieCastServiceAsync.GetAllByCastId(id);
+            return Ok(model);
+        }
+
+
+    }
 
 
 }

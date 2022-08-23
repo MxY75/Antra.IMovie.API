@@ -19,7 +19,7 @@ namespace IMovieCRMAPI.Controllers
         [HttpGet("topPurchase")]
         public async Task<IActionResult> GetTopPurchase()
         {
-            var result = await reportService.GetTopPurchasedMovies();
+            var result = await reportService.GetTopPurchasedMoviesNoPage();
             if (result != null)
             {
                 return Ok(result);

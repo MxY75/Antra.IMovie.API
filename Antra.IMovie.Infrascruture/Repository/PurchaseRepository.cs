@@ -22,5 +22,10 @@ namespace Antra.IMovie.Infrascruture.Repository
         {
             return await movieContext.Purchase.Include("Movie").Where(x => x.MovieId == movieId).ToArrayAsync();
         }
+
+        public async Task<Purchase> GetPurchasebyUserIdMovieId(int uid, int mid)
+        {
+            return await movieContext.Purchase.Include("Movie").Where(x => x.UserId == uid && x.MovieId == mid).FirstAsync();
+        }
     }
 }

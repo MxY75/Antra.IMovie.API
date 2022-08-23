@@ -8,10 +8,12 @@ namespace Antra.IMovie.Core.Contracts.Repository
 {
     public interface IRepositoryAsync<T> where T :class
     {
-        Task<int> Delete(int id);
-  
-        Task<T> GetByIdAsync(int id);
+      
         Task<int> InsertAsync(T entity);
-        Task<IEnumerable<T>> GetAllAsync(); 
+        Task<int> UpdateAsync(T entity);
+        Task<T> GetByIdAsync(int id);
+        Task<int> Delete(int id);
+        Task<IEnumerable<T>> GelAllAsync();
+
     }
 }

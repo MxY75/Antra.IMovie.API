@@ -15,7 +15,7 @@ namespace Antra.IMovie.Infrascruture.Service
     public class CastService : ICastService
     {
 
-        ICastRepositorycs castRepository;
+        private readonly ICastRepositorycs castRepository;
 
         public CastService(ICastRepositorycs _castRepository)
         {
@@ -25,7 +25,7 @@ namespace Antra.IMovie.Infrascruture.Service
 
         public async Task<IEnumerable<CastModel>> GetAllCasts()
         {
-            var result = await castRepository.GetAllAsync();
+            var result = await castRepository.GelAllAsync();
 
             List<CastModel> casts = new List<CastModel>();
             if (result != null)

@@ -21,6 +21,6 @@ namespace Antra.IMovie.Core.Model
         public string TmdbUrl { get; set; }
         public string ProfilePath { get; set; }
 
-       // public virtual IEnumerable<MovieCastModel> MovieCasts { get; set; }
+      public virtual IEnumerable<MovieCastModel> MovieCasts { get; set; }
     }
 }

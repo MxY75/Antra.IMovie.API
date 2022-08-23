@@ -23,7 +23,18 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPurchaseRepostiry, PurchaseRepository>();
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+builder.Services.AddScoped<IMovieCastRepositoryAsync, MovieCastRepositoryAsync>();
+builder.Services.AddScoped<IMovieGenreRepositoryAsync, MovieGenreRepositoryAsyn>();
+builder.Services.AddScoped<IMovieRepositoryAsync, MovieRepositoryAsync>();
+builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
 
+
+builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+builder.Services.AddScoped<IMovieServiceAsync, MovieServiceAsync>();
+builder.Services.AddScoped<IMovieCastServiceAsync, MovieCastServiceAsync>();
+builder.Services.AddScoped<IMovieGenreServiceAsync, MovieGenreService>();
+builder.Services.AddScoped<IGenreServiceAsync, GenreServiceAsync>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IPurchaseService, PurchaseService>();
 builder.Services.AddScoped<ICastService, CastService>();

@@ -7,10 +7,7 @@ using System.Threading.Tasks;
 
 namespace Antra.IMovie.Core.Contracts.Repository
 {
-    public interface IPurchaseRepostiry :IRepositoryAsync<Purchase>
+    public interface IGenreRepository : IRepositoryAsync<Genre>
     {
-
-        Task<IEnumerable<Purchase>> GetAllByMovieIdAsync(int movieId);
-        Task<Purchase> GetPurchasebyUserIdMovieId(int uid, int mid);
     }
 }

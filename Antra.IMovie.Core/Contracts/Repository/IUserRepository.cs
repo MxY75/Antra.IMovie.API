@@ -10,5 +10,8 @@ namespace Antra.IMovie.Core.Contracts.Repository
     public interface IUserRepository : IRepositoryAsync<User>
 
     {
+        Task<IEnumerable<Purchase>> GetPurchasesByUserid(int id);
+        
+
     }
 }

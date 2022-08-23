@@ -13,17 +13,19 @@ namespace Antra.IMovie.Infrascruture.Repository
             db = _context;
         }
 
-            public async Task<int> Delete(int id)
+        public async Task<int> Delete(int id)
         {
             var entity = await db.Set<T>().FindAsync(id);
             db.Set<T>().Remove(entity);
             return await db.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GelAllAsync()
         {
             return await db.Set<T>().ToListAsync();
         }
+
+     
 
         public async Task<T> GetByIdAsync(int id)
         {
@@ -33,6 +35,13 @@ namespace Antra.IMovie.Infrascruture.Repository
         public async Task<int> InsertAsync(T entity)
         {
             await db.Set<T>().AddAsync(entity);
+            return await db.SaveChangesAsync();
+        }
+
+        public async Task<int> UpdateAsync(T entity)
+        {
+
+            db.Entry<T>(entity).State = EntityState.Modified;
             return await db.SaveChangesAsync();
         }
     }

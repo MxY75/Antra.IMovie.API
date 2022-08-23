@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Antra.IMovie.Core.Contracts.Repository
 {
-    public interface IPurchaseRepostiry :IRepositoryAsync<Purchase>
+    public interface IFavoriteRepository : IRepositoryAsync<Favorite>
     {
+        Task<IEnumerable<Favorite>> GetAllFavoritesByUserId(int id);
 
-        Task<IEnumerable<Purchase>> GetAllByMovieIdAsync(int movieId);
-        Task<Purchase> GetPurchasebyUserIdMovieId(int uid, int mid);
+        Task<Favorite> GetFavoritebyMidUid(int mid, int uid);
     }
 }

@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace Antra.IMovie.Core.Contracts.Service
 {
-    public interface IMovieServiceAsync
+   public interface IGenreServiceAsync
     {
-        Task<MovieModel> GetByIdAsync(int id);
-        Task<MovieResponseModel> GetMovieResponseModel(int id);
 
+        Task<int> InsertGenre(GenreModel genreModel);
+        Task<IEnumerable<GenreModel>> GetAllGenres();
+        Task<GenreModel> GetGenresByIdAsync(int id);
 
     }
 }
