@@ -22,5 +22,10 @@ namespace Antra.IMovie.Core.Contracts.Service
         Task<bool> FavoriteExists(int mid, int uid);
         Task<FavoriteResponseModel> GetAllFavoritesForUser(int id);
 
+        Task<int>AddMovieReview(ReviewRequestModel reviewRequest);
+        Task<int> UpdateMovieReview(ReviewRequestModel reviewRequest);
+        Task<int> DeleteMovieReview(int userId, int movieId);
+        Task<ReviewResponseModel> GetAllReviewsByUser(int id);
+
     }
 }

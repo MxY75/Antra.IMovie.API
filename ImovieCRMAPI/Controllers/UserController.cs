@@ -1,4 +1,4 @@
-﻿
+﻿ 
 using Antra.IMovie.Core.Contracts.Service;
 using Antra.IMovie.Core.Entity;
 using Antra.IMovie.Core.Model;
@@ -88,7 +88,7 @@ namespace IMovieCRMAPI.Controllers
             return BadRequest();
         }
         [HttpDelete]
-       
+
         public async Task<IActionResult> Delete(FavoriteRequestModel model)
         {
             var result = await userService.RemoveFavorite(model);
@@ -109,7 +109,43 @@ namespace IMovieCRMAPI.Controllers
                 return NotFound($"This user doesn't have favorite movies ");
             return Ok(result);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAllReviewsByUser(int uid)
+        {
+            var result = await userService.GetAllFavoritesForUser(uid);
+            if (result == null)
+                return NotFound($"This user doesn't write any review ");
+            return Ok(result);
 
+        }
 
+        [HttpPut]
+        public async Task<IActionResult> Put(ReviewRequestModel m)
+        {
+            var response = new { Message = "Review is updated" };
+            if (await userService.UpdateMovieReview(m) > 0)
+                return Ok(response);
+            return NoContent();
+        }
+
+        [HttpDelete("DeleteReview")]
+        public async Task<IActionResult> Delete(int uid, int mid)
+        {
+            var response = new { Message = "deleted" };
+            if (await userService.DeleteMovieReview(uid, mid) > 0)
+                return Ok(response);
+            return NoContent();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddReview(ReviewRequestModel model)
+        {
+            if (await userService.AddMovieReview(model) > 0)
+            {
+                return Ok(model);
+            }
+            return BadRequest();
+
+        }
     }
 }

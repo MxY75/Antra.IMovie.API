@@ -20,14 +20,16 @@ namespace Antra.IMovie.Infrascruture.Service
         IMovieRepositoryAsync movieRepository;
         IFavoriteRepository favoriteRepository;
         IMovieServiceAsync movieService;
+        IReviewRepository reviewRepository;
 
-        public UserService(IUserRepository _userRepository, IPurchaseRepostiry purchaseRepostiry,IMovieRepositoryAsync movieRepository, IFavoriteRepository favoriteRepository, IMovieServiceAsync movieService)
+        public UserService(IUserRepository _userRepository, IPurchaseRepostiry purchaseRepostiry,IMovieRepositoryAsync movieRepository, IFavoriteRepository favoriteRepository, IMovieServiceAsync movieService,IReviewRepository review)
         {
             userRepository = _userRepository;
             this.purchaseRepostiry = purchaseRepostiry;
             this.movieRepository = movieRepository;
             this.favoriteRepository = favoriteRepository;
             this.movieService = movieService;
+            reviewRepository = review;
         }
 
 
@@ -216,6 +218,62 @@ namespace Antra.IMovie.Infrascruture.Service
 
             favoriteResponseModel.FavoriteMovies = lists;
             return favoriteResponseModel;
+        }
+
+        public async Task<int> AddMovieReview(ReviewRequestModel model)
+        {
+
+            Review review = new Review();
+                if (model != null)
+                {
+                    review.UserId = model.UserId;
+                    review.MovieId = model.MovieId;
+                    review.Rating = model.Rating;
+                    review.ReviewText = model.ReviewText;
+                    return await reviewRepository.InsertAsync(review) ;
+                }
+            
+            return -1;
+        }
+
+        public async Task<int> UpdateMovieReview(ReviewRequestModel model)
+        {
+            Review review = new Review();
+           
+                review.UserId = model.UserId;
+                review.MovieId = model.MovieId;
+                review.Rating = model.Rating;
+                review.ReviewText = model.ReviewText;
+                return await reviewRepository.UpdateAsync(review);
+            
+        }
+
+        public async Task<int> DeleteMovieReview(int userId, int movieId)
+        {
+            Review entity = await reviewRepository.GetReviewbyMidUid(movieId, userId);
+            if (entity == null) {
+                return -1;
+            }
+            return await reviewRepository.Delete(entity.Id);
+        }
+
+        public async Task<ReviewResponseModel> GetAllReviewsByUser(int id)
+        {
+            var result =await reviewRepository.GetAllReviewsByUserId(id);
+            ReviewResponseModel model = new ReviewResponseModel();
+            model.reviewList = new List<ReviewListModel>();
+            if (result != null) {
+                foreach (Review entity in result) {
+                    model.UserId = entity.UserId;
+                    ReviewListModel listModel = new ReviewListModel();
+                    listModel.MovieId = entity.MovieId;
+                    listModel.ReviewText = entity.ReviewText;
+                    listModel.Rating = entity.Rating;
+                    model.reviewList.Add(listModel);
+                }
+                return model;
+            }
+            return null;
         }
     }
 }
