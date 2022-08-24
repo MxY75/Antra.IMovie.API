@@ -29,8 +29,10 @@ builder.Services.AddScoped<IMovieGenreRepositoryAsync, MovieGenreRepositoryAsyn>
 builder.Services.AddScoped<IMovieRepositoryAsync, MovieRepositoryAsync>();
 builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepositoryAsync>();
+builder.Services.AddScoped<ITrailerRepository,TrailerRepository>();
 
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<ITrailerService, TrailerService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 builder.Services.AddScoped<IMovieServiceAsync, MovieServiceAsync>();
 builder.Services.AddScoped<IMovieCastServiceAsync, MovieCastServiceAsync>();

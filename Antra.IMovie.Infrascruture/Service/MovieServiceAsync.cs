@@ -14,13 +14,16 @@ namespace Antra.IMovie.Infrascruture.Service
     {
         private readonly IMovieRepositoryAsync movieRepositoryAsync;
         private readonly IMovieGenreRepositoryAsync movieGenreRepositoryAsyn;
-        private readonly IMovieCastRepositoryAsync movieCastRepositoryAsync; 
+        private readonly IMovieCastRepositoryAsync movieCastRepositoryAsync;
+        private readonly ITrailerService trailerService;
 
-        public MovieServiceAsync(IMovieRepositoryAsync _movieRepositoryAsync, IMovieGenreRepositoryAsync movieGenreRepositoryAsyn, IMovieCastRepositoryAsync movieCastRepositoryAsync)
+        public MovieServiceAsync(IMovieRepositoryAsync _movieRepositoryAsync, IMovieGenreRepositoryAsync movieGenreRepositoryAsyn, IMovieCastRepositoryAsync movieCastRepositoryAsync, ITrailerService trailerService)
         {
             movieRepositoryAsync = _movieRepositoryAsync;
             this.movieGenreRepositoryAsyn = movieGenreRepositoryAsyn;
-            this.movieCastRepositoryAsync = movieCastRepositoryAsync;   
+            this.movieCastRepositoryAsync = movieCastRepositoryAsync;
+            this.trailerService = trailerService;
+   
         }
 
         public async Task<IEnumerable<MovieResponseModel>> GetAllMovies()
@@ -118,6 +121,13 @@ namespace Antra.IMovie.Infrascruture.Service
                 };
                 model.Genres.Add(genreModel);
             }
+            model.Trailers = new List<TrailerModel>(); 
+            var resultTrailers =  await trailerService.GetAllTrailersByMid(mid);
+            foreach (TrailerModel trailerModel in resultTrailers) {
+                model.Trailers.Add(trailerModel);
+            }
+            
+
                 return model;
         }
 
