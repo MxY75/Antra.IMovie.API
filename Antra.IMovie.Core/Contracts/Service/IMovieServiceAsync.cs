@@ -12,6 +12,13 @@ namespace Antra.IMovie.Core.Contracts.Service
         Task<MovieModel> GetByIdAsync(int id);
         Task<MovieResponseModel> GetMovieResponseModel(int id);
 
+        Task <IEnumerable<MovieResponseModel>> GetAllMovies();
+        Task<List<MovieResponseModel>> GetTop30GRatedMoviesAsync();
+        Task<PagedResult<MovieResponseModel>> GetMoviesByPaginationAsync(int pageSize, int page);
+
+        Task<MovieModel> GetMovieDetailsAsync(int id);
+        Task<List<MovieResponseModel>> MoviesSameGenreAsync(int id);
+
 
     }
 }

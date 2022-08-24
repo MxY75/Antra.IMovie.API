@@ -4,6 +4,7 @@ using Antra.IMovie.Infrascruture.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Antra.IMovie.Infrascruture.Migrations
 {
     [DbContext(typeof(IMovieCrmDBContext))]
-    partial class IMovieCrmDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220824093930_addTrailer")]
+    partial class addTrailer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -619,7 +621,7 @@ namespace Antra.IMovie.Infrascruture.Migrations
             modelBuilder.Entity("Antra.IMovie.Core.Entity.Favorite", b =>
                 {
                     b.HasOne("Antra.IMovie.Core.Entity.Movie", "Movie")
-                        .WithMany("FavoriteOfMovie")
+                        .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -663,7 +665,7 @@ namespace Antra.IMovie.Infrascruture.Migrations
                         .IsRequired();
 
                     b.HasOne("Antra.IMovie.Core.Entity.Movie", "Movie")
-                        .WithMany("GernesOfMovie")
+                        .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -676,7 +678,7 @@ namespace Antra.IMovie.Infrascruture.Migrations
             modelBuilder.Entity("Antra.IMovie.Core.Entity.Purchase", b =>
                 {
                     b.HasOne("Antra.IMovie.Core.Entity.Movie", "Movie")
-                        .WithMany("PurchaseOfMovie")
+                        .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -695,7 +697,7 @@ namespace Antra.IMovie.Infrascruture.Migrations
             modelBuilder.Entity("Antra.IMovie.Core.Entity.Review", b =>
                 {
                     b.HasOne("Antra.IMovie.Core.Entity.Movie", "Movie")
-                        .WithMany("ReviewOfMovie")
+                        .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -714,7 +716,7 @@ namespace Antra.IMovie.Infrascruture.Migrations
             modelBuilder.Entity("Antra.IMovie.Core.Entity.Trailer", b =>
                 {
                     b.HasOne("Antra.IMovie.Core.Entity.Movie", "Movie")
-                        .WithMany("Trailers")
+                        .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -794,17 +796,7 @@ namespace Antra.IMovie.Infrascruture.Migrations
 
             modelBuilder.Entity("Antra.IMovie.Core.Entity.Movie", b =>
                 {
-                    b.Navigation("FavoriteOfMovie");
-
-                    b.Navigation("GernesOfMovie");
-
                     b.Navigation("MovieCasts");
-
-                    b.Navigation("PurchaseOfMovie");
-
-                    b.Navigation("ReviewOfMovie");
-
-                    b.Navigation("Trailers");
                 });
 
             modelBuilder.Entity("Antra.IMovie.Core.Entity.Role", b =>

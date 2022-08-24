@@ -61,5 +61,10 @@ namespace Antra.IMovie.Core.Entity
         public string? CreatedBy { get; set; }
 
         public virtual ICollection<MovieCast> MovieCasts { get; set; }
+        public List<Trailer> Trailers { get; set; }
+        public List<MovieGenre> GernesOfMovie { get; set; }
+        public List<Review> ReviewOfMovie { get; set; }
+        public List<Favorite> FavoriteOfMovie { get; set; }
+        public List<Purchase> PurchaseOfMovie { get; set; }
     }
 }

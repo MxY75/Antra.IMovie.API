@@ -29,5 +29,8 @@ namespace Antra.IMovie.Core.Model
 
         public string? UpdateBy { get; set; }
         public string? CreatedBy { get; set; }
+        public List<CastModel> Casts { get; set; }
+        public List<GenreModel> Genres { get; set; }
+        public List<TrailerModel> Trailers { get; set; }
     }
 }

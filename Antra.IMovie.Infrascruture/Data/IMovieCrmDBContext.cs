@@ -33,6 +33,8 @@ namespace Antra.IMovie.Infrascruture.Data
         public DbSet<MovieCast> MovieCast { get; set; }
         public DbSet<Review> Review{ get; set; }
 
+        public DbSet<Trailer> Trailer { get; set; }
+
 
 
 
