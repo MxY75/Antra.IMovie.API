@@ -52,7 +52,9 @@ namespace IMovieCRMAPI.Controllers
         {
             var result = await accountServiceAsync.LoginAsync(model);
             if (!result.Succeeded)
+            {
                 return Unauthorized(new { Message = "Invalid Username and password" });
+            }
             //list of claims
             var authCalims = new List<Claim> {
                 new Claim(ClaimTypes.Name,model.Email),
@@ -70,7 +72,7 @@ namespace IMovieCRMAPI.Controllers
                 signingCredentials: new SigningCredentials(authKey,SecurityAlgorithms.HmacSha256Signature)
                 );
             var t = new JwtSecurityTokenHandler().WriteToken(token);
-            return Ok(new { jwt = t});
+            return Ok(new {  t});
         }
     }
 }

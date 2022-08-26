@@ -30,15 +30,24 @@ namespace IMovieCRMAPI.Controllers
         }
 
         [HttpGet("MoviesByGenre")]
-        public async Task<IActionResult>getMoviesByGenreidPaged(int id, int pageSize = 30, int pageNumber = 1)
+        public async Task<IActionResult> getMoviesByGenreid(int gid)
         {
-            var result = await movieGenreServiceAsync.MoviesByGenre(id, pageSize, pageNumber);
+            var result = await movieGenreServiceAsync.GetAllByGenreIdAsync(gid);
             if (result != null)
             {
                 return Ok(result);
             }
             return NoContent();
         }
+        //public async Task<IActionResult> getMoviesByGenreidPaged(int id, int pageSize = 30, int pageNumber = 1)
+        //{
+        //    var result = await movieGenreServiceAsync.MoviesByGenre(id, pageSize, pageNumber);
+        //    if (result != null)
+        //    {
+        //        return Ok(result);
+        //    }
+        //    return NoContent();
+        //}
 
     }
 }

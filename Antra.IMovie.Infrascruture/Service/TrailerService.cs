@@ -21,7 +21,7 @@ namespace Antra.IMovie.Infrascruture.Service
 
         public async Task<IEnumerable<TrailerModel>> GetAllTrailersByMid(int mid) {
             List<TrailerModel> trailerModels = new List<TrailerModel>();
-            var result = await trailerRepository.GetAllReviewsByMovieId(mid);
+            var result = await trailerRepository.GetAllTrailersByMovieId(mid);
             if (result != null) {
                 foreach (Trailer item in result) {
                     TrailerModel model = new TrailerModel();

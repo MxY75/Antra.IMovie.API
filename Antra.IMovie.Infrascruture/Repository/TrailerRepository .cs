@@ -18,7 +18,7 @@ namespace Antra.IMovie.Infrascruture.Repository
             movieContext = _context;
         }
 
-        public async Task<IEnumerable<Trailer>> GetAllReviewsByMovieId(int mid)
+        public async Task<IEnumerable<Trailer>> GetAllTrailersByMovieId(int mid)
         {
             return await movieContext.Trailer.Where(T=> T.MovieId == mid).ToArrayAsync();
         }

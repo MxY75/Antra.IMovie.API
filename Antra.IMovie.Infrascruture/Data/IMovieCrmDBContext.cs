@@ -25,7 +25,6 @@ namespace Antra.IMovie.Infrascruture.Data
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Movie> Movie { get; set; }
         public DbSet<AppUser> AppUser {get;set;}
-
         public DbSet<Genre> Genre { get; set; }
 
         public DbSet<MovieGenre> MovieGenre { get; set; }

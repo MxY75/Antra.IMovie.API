@@ -44,6 +44,7 @@ builder.Services.AddScoped<ICastService, CastService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAccountServiceAsync, AccountSerivceAsync>();
 builder.Services.AddSqlServer<IMovieCrmDBContext>(builder.Configuration.GetConnectionString("DBIMovie"));
+//identity
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<IMovieCrmDBContext>().AddDefaultTokenProviders();
 ;builder.Services.AddCors(options => {
     //(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200")

@@ -10,9 +10,11 @@ namespace IMovieCRMAPI.Controllers
     public class MovieController : ControllerBase
     {
         private readonly IMovieServiceAsync movieService;
-        public MovieController(IMovieServiceAsync movieService)
+        private readonly ITrailerService trailerService;
+        public MovieController(IMovieServiceAsync movieService, ITrailerService trailerService)
         {
             this.movieService = movieService;
+            this.trailerService = trailerService;
         }
         [HttpGet("MovieDetail")]
         public async Task<IActionResult> GetMovieDetailByMovieId(int id)
@@ -27,7 +29,7 @@ namespace IMovieCRMAPI.Controllers
 
 
         [HttpGet]
-            public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
 
             var result = Ok(await movieService.GetByIdAsync(id));
@@ -40,9 +42,21 @@ namespace IMovieCRMAPI.Controllers
         }
 
         [HttpGet("ShowAllMovies")]
-        public async Task<IActionResult> GetAllMovies() {
+        public async Task<IActionResult> GetAllMovies()
+        {
             //  var result = await movieService.GetMoviesByPaginationAsync(pageSize,page);
             var result = await movieService.GetAllMovies();
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return NoContent();
+        }
+
+        [HttpGet("getAlltralierByid")]
+        public async Task<IActionResult> getAlltralierByid(int id)
+        {
+            var result = await trailerService.GetAllTrailersByMid(id );
             if (result != null)
             {
                 return Ok(result);

@@ -9,7 +9,7 @@ namespace Antra.IMovie.Core.Contracts.Repository
 {
     public interface ITrailerRepository : IRepositoryAsync<Trailer>
     {
-        Task<IEnumerable<Trailer>> GetAllReviewsByMovieId(int mid);
+        Task<IEnumerable<Trailer>> GetAllTrailersByMovieId(int mid);
 
     }
 }

@@ -31,17 +31,7 @@ namespace IMovieCRMAPI.Controllers
             return BadRequest();
 
         }
-        [HttpGet("GetAllUsers")]
-        public async Task<IActionResult> Get()
-        {
-
-            var result = await userService.GetAllUsers();
-            if (result != null)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
-        }
+   
 
         [HttpGet("GetAllPurchaseByuserId")]
         public async Task<IActionResult> GetAllPurchaseByuserId(int id)
@@ -87,9 +77,8 @@ namespace IMovieCRMAPI.Controllers
                 return Ok(model);
             return BadRequest();
         }
-        [HttpDelete]
-
-        public async Task<IActionResult> Delete(FavoriteRequestModel model)
+        [HttpDelete("removieFavorite")]
+        public async Task<IActionResult> DeleteFavorite(FavoriteRequestModel model)
         {
             var result = await userService.RemoveFavorite(model);
             if (result > 0)
@@ -100,8 +89,7 @@ namespace IMovieCRMAPI.Controllers
             return BadRequest();
         }
 
-        [HttpGet]
-        [Route("{id:int}")]
+        [HttpGet("UserAllFavorites")]
         public async Task<IActionResult> GetAllFavoritesForUser(int id)
         {
             var result = await userService.GetAllFavoritesForUser(id);
@@ -109,7 +97,7 @@ namespace IMovieCRMAPI.Controllers
                 return NotFound($"This user doesn't have favorite movies ");
             return Ok(result);
         }
-        [HttpGet]
+        [HttpGet("UserAllReview")]
         public async Task<IActionResult> GetAllReviewsByUser(int uid)
         {
             var result = await userService.GetAllFavoritesForUser(uid);
@@ -119,7 +107,7 @@ namespace IMovieCRMAPI.Controllers
 
         }
 
-        [HttpPut]
+        [HttpPut("EditReview")]
         public async Task<IActionResult> Put(ReviewRequestModel m)
         {
             var response = new { Message = "Review is updated" };
@@ -137,7 +125,7 @@ namespace IMovieCRMAPI.Controllers
             return NoContent();
         }
 
-        [HttpPost]
+        [HttpPost("AddRview")]
         public async Task<IActionResult> AddReview(ReviewRequestModel model)
         {
             if (await userService.AddMovieReview(model) > 0)
