@@ -3,6 +3,7 @@ using Antra.IMovie.Core.Contracts.Repository;
 using Antra.IMovie.Core.Contracts.Service;
 using Antra.IMovie.Core.Entity;
 using Antra.IMovie.Core.Model;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,9 @@ namespace Antra.IMovie.Infrascruture.Service
         IMovieServiceAsync movieService;
         IReviewRepository reviewRepository;
 
-        public UserService(IUserRepository _userRepository, IPurchaseRepostiry purchaseRepostiry,IMovieRepositoryAsync movieRepository, IFavoriteRepository favoriteRepository, IMovieServiceAsync movieService,IReviewRepository review)
+
+
+        public UserService(IUserRepository _userRepository, IPurchaseRepostiry purchaseRepostiry, IMovieRepositoryAsync movieRepository, IFavoriteRepository favoriteRepository, IMovieServiceAsync movieService, IReviewRepository review)
         {
             userRepository = _userRepository;
             this.purchaseRepostiry = purchaseRepostiry;
@@ -48,13 +51,13 @@ namespace Antra.IMovie.Infrascruture.Service
                 return user;
             }
             return null;
-        
+
         }
         public async Task<IEnumerable<UserGetModel>> GetAllUsers()
         {
 
             List<UserGetModel> usersList = new List<UserGetModel>();
-          var list = await userRepository.GelAllAsync();
+            var list = await userRepository.GelAllAsync();
             foreach (var entity in list) {
                 UserGetModel user = new UserGetModel();
                 user.Id = entity.Id;
@@ -68,7 +71,7 @@ namespace Antra.IMovie.Infrascruture.Service
             return usersList;
         }
 
-    
+
 
         public Task<int> InsertUser(UserPostModel user)
         {
@@ -86,12 +89,12 @@ namespace Antra.IMovie.Infrascruture.Service
 
         public async Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest, int userId)
         {
-            var  purchases = await userRepository.GetPurchasesByUserid(userId);
+            var purchases = await userRepository.GetPurchasesByUserid(userId);
             if (purchases != null)
             {
                 foreach (var entity in purchases)
                 {
-                    if (entity.MovieId == purchaseRequest .MovieId) {
+                    if (entity.MovieId == purchaseRequest.MovieId) {
                         return true;
                     }
                 }
@@ -100,22 +103,22 @@ namespace Antra.IMovie.Infrascruture.Service
         }
 
 
-    
+
         public async Task<bool> PurchaseMovie(PurchaseRequestModel purchase, int userId)
         {
             Purchase entity = new Purchase();
             Movie movie = await movieRepository.GetByIdAsync(purchase.MovieId);
-            entity.MovieId =purchase.MovieId;
+            entity.MovieId = purchase.MovieId;
             entity.UserId = userId;
             entity.PurchaseNumber = (Guid)purchase.PurchaseNumber;
 
             if (movie.Price == null)
                 entity.TotalPrice = 8.9m;
-          if (purchase.PurchaseDateTime != null) {
+            if (purchase.PurchaseDateTime != null) {
                 entity.PurchaseDateTime = (DateTime)purchase.PurchaseDateTime;
             }
             entity.PurchaseDateTime = DateTime.Now;
-           int insertSuccess =   await purchaseRepostiry.InsertAsync(entity);
+            int insertSuccess = await purchaseRepostiry.InsertAsync(entity);
             if (insertSuccess > 0) {
                 return true;
             }
@@ -124,7 +127,7 @@ namespace Antra.IMovie.Infrascruture.Service
         public async Task<PurchaseDetailsResponseModel> GetPurchasesDetails(int userId, int movieId)
         {
             var result = await purchaseRepostiry.GetPurchasebyUserIdMovieId(userId, movieId);
-            
+
             if (result != null) {
                 PurchaseDetailsResponseModel model = new PurchaseDetailsResponseModel();
                 model.Id = result.Id;
@@ -138,12 +141,12 @@ namespace Antra.IMovie.Infrascruture.Service
                 return model;
             }
             return null;
-           
-        }
 
-        public async Task<IEnumerable<PurchaseModel>> GetAllPurchasesForUser(int id)
+        }
+        
+        public async Task<IEnumerable<PurchaseModel>> GetAllPurchasesForUser(int uid)
         {
-           var result = await userRepository.GetPurchasesByUserid(id);
+           var result = await userRepository.GetPurchasesByUserid(uid);
             List<PurchaseModel> purchaseModels = new List<PurchaseModel>();
             if (result != null) {
                 foreach (var entity in result) {

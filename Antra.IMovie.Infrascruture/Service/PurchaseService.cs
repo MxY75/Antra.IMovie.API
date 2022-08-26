@@ -39,14 +39,32 @@ namespace Antra.IMovie.Infrascruture.Service
             return null;
         }
 
-        public Task<int> InsertPurchase(PurchaseModel model) {
+        public async Task<PurchaseModel> GetPurchasebyUserIdMovieId(int uid, int mid)
+        {
+            var p = await purchaseRepostiry.GetPurchasebyUserIdMovieId(uid, mid);
+
+            if (p != null)
+            {
+                PurchaseModel pmodel = new PurchaseModel();
+                pmodel.Id = p.Id;
+                pmodel.PurchaseNumber = p.PurchaseNumber;
+                pmodel.MovieId = p.MovieId;
+                pmodel.UserId = p.UserId;
+                pmodel.PurchaseDateTime = p.PurchaseDateTime;
+                pmodel.TotalPrice = p.TotalPrice;
+                return pmodel;
+            }
+            return null;
+        }
+
+        public Task<int> InsertPurchase(int uid,int mid) {
             Purchase entity = new Purchase();
             var guid = Guid.NewGuid();
-            entity.MovieId = model.MovieId;
-            entity.UserId = model.UserId;
+            entity.MovieId = mid;
+            entity.UserId = uid;
             entity.PurchaseNumber = guid;
-            entity.TotalPrice = model.TotalPrice;
-            entity.PurchaseDateTime = model.PurchaseDateTime;
+            entity.TotalPrice = 9.9m;
+            entity.PurchaseDateTime = DateTime.Now;
             return purchaseRepostiry.InsertAsync(entity);
         }
     }

@@ -2,17 +2,21 @@
 using Antra.IMovie.Core.Contracts.Service;
 using Antra.IMovie.Core.Entity;
 using Antra.IMovie.Core.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMovieCRMAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "RUser")]
     public class UserController : ControllerBase
     {
 
         IUserService userService;
+      
         public UserController(IUserService userService)
         {
             this.userService = userService;

@@ -1,9 +1,10 @@
-using Antra.IMovie.Core.Contracts.Repository;
+﻿using Antra.IMovie.Core.Contracts.Repository;
 using Antra.IMovie.Core.Contracts.Service;
 using Antra.IMovie.Core.Entity;
 using Antra.IMovie.Infrascruture.Data;
 using Antra.IMovie.Infrascruture.Repository;
 using Antra.IMovie.Infrascruture.Service;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -31,6 +32,7 @@ builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepositoryAsync>();
 builder.Services.AddScoped<ITrailerRepository,TrailerRepository>();
 
+builder.Services.AddScoped<ICookieLoginService, CookieLoginService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<ITrailerService, TrailerService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
@@ -46,11 +48,18 @@ builder.Services.AddScoped<IAccountServiceAsync, AccountSerivceAsync>();
 builder.Services.AddSqlServer<IMovieCrmDBContext>(builder.Configuration.GetConnectionString("DBIMovie"));
 //identity
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<IMovieCrmDBContext>().AddDefaultTokenProviders();
+
+
 ;builder.Services.AddCors(options => {
     //(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200")
     options.AddDefaultPolicy(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 });
-
+//---cookie
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(option =>
+{
+    option.LoginPath = new PathString("/api/CookieLogin/NoLogin");
+});
+//--
 
 builder.Services.AddAuthentication(options =>
 {
@@ -71,6 +80,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
     };
 });
+
 var app = builder.Build();
 
 
@@ -83,6 +93,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors();
+//--cookie
+app.UseCookiePolicy();
+//---
 
 app.UseAuthentication();
 app.UseAuthorization();

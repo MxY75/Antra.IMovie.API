@@ -1,5 +1,6 @@
 ﻿using Antra.IMovie.Core.Contracts.Repository;
 using Antra.IMovie.Core.Contracts.Service;
+using Antra.IMovie.Core.Entity;
 using Antra.IMovie.Core.Model;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -13,19 +14,39 @@ namespace Antra.IMovie.Infrascruture.Service
     public class AccountSerivceAsync : IAccountServiceAsync
     {
         private readonly IAccountRepository accountRepository;
+        private readonly UserManager<AppUser> userManager;
 
-        public AccountSerivceAsync(IAccountRepository  repo) {
+        public AccountSerivceAsync(IAccountRepository  repo,UserManager<AppUser> um) {
             accountRepository = repo;
+            userManager = um;
         }
 
-        public Task<SignInResult> LoginAsync(SignInModel model)
+  
+
+        public async Task<SignInResultUser> LoginAsync(SignInModel model)
         {
-           return accountRepository.LoginAsync(model);
+
+           SignInResultUser user = new SignInResultUser();
+           SignInResult result = await accountRepository.LoginAsync(model);
+            user.SignResult = result;
+            
+            if (result.Succeeded) { 
+               var usere = await userManager.FindByEmailAsync(model.Email);
+                string id = await userManager.GetUserIdAsync(usere);
+                user.UserId = id;
+            }
+
+            return user;
         }
 
-        public Task<IdentityResult> SignUpAsync(SignUpModel model )
+        public async Task<IdentityResult> SignUpAsync(SignUpModel model )
         {
-           return accountRepository.SignUpAsync(model);
+            IdentityResult  result = await accountRepository.SignUpAsync(model);
+            if (result.Succeeded) {
+                var usere = await userManager.FindByEmailAsync(model.Email);
+                result =  await userManager.AddToRoleAsync(usere, "Regular");
+            }
+            return result;
         }
     }
 }

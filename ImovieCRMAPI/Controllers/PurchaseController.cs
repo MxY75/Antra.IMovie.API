@@ -16,11 +16,11 @@ namespace IMovieCRMAPI.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> Post(PurchaseModel purchaseModel) {
+        public async Task<IActionResult> Post(int uid,int mid) {
             if (ModelState.IsValid)
             {
-                if (await purchaseService.InsertPurchase(purchaseModel) > 0) {
-                    return Ok(purchaseModel);
+                if (await purchaseService.InsertPurchase(uid,mid) > 0) {
+                    return Ok(new { Message = "add success" });
                 }
             }
 

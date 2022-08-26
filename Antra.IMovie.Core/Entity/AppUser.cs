@@ -11,7 +11,7 @@ namespace Antra.IMovie.Core.Entity
     public class AppUser : IdentityUser
     { 
 
-        public new int Id { get; set; }
+      
         [Column(TypeName = "varchar(30)")]
         public string FirstName { get; set; }
 

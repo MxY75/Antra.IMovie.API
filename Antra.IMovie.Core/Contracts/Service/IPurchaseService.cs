@@ -10,7 +10,9 @@ namespace Antra.IMovie.Core.Contracts.Service
 {
     public interface IPurchaseService
     {
-        Task<int> InsertPurchase(PurchaseModel purchase);
+        Task<PurchaseModel> GetPurchasebyUserIdMovieId(int uid, int mid);
+
+        Task<int> InsertPurchase(int uid, int mid);
         Task<IEnumerable<PurchaseModel>> GetAllByMovieIdAsync(int movieId);
 
     }

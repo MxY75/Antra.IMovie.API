@@ -14,10 +14,13 @@ namespace Antra.IMovie.Infrascruture.Repository
     public class AccountRepository : IAccountRepository {
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
-        public AccountRepository(UserManager<AppUser>m, SignInManager<AppUser> signInManager)
+        private readonly RoleManager<IdentityRole> roleManager;
+        private static int accountNumber = 0;
+        public AccountRepository(UserManager<AppUser>m, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             userManager = m;
             this.signInManager = signInManager;
+            this.roleManager = roleManager; 
         }
 
         public Task<IdentityResult> SignUpAsync(SignUpModel user)
@@ -27,13 +30,34 @@ namespace Antra.IMovie.Infrascruture.Repository
             appUser.LastName = user.LastName;
             appUser.Email = user.Email;
             appUser.UserName = user.Email;
+            
 
            return userManager.CreateAsync(appUser, user.Password);
         }
-       public Task<SignInResult> LoginAsync(SignInModel model)
+        public async Task<SignInResult> LoginAsync(SignInModel model)
         {
 
-           return signInManager.PasswordSignInAsync(model.Email, model.Password, model.Remember, false);
+            return await signInManager.PasswordSignInAsync(model.Email, model.Password, model.Remember, false);
+           
         }
+
+        public async Task<IdentityResult> CreateRoles()
+        {
+            IdentityResult roleResult = new IdentityResult();
+            string[] roleNames = { "Admin", "Regular" };
+            foreach (var roleName in roleNames)
+            {
+               
+                    var role = new IdentityRole
+                    {
+                        Name = roleName
+                    };
+                    roleResult = await roleManager.CreateAsync(role);
+                
+            }
+            return roleResult; 
+        }
+
+      
     }       
 }

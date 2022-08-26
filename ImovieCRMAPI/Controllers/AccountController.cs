@@ -45,12 +45,36 @@ namespace IMovieCRMAPI.Controllers
         [HttpPost("login")]
 
 
-  //           "email": "MMuser@example.com",
-  //"password": "MMstring123."
-   
+        //           "email": "MMuser@example.com",
+        //"password": "MMstring123."
+  //          "email": "admin@example.com",
+  //"password": "AAdmin123."
+
         public async Task<IActionResult> Login(SignInModel model)
         {
-            var result = await accountServiceAsync.LoginAsync(model);
+            if (model.Email.Contains("admin"))
+            {
+                return await AdminLogin(model);
+            }
+            else {
+
+               return await UserLogin(model);
+            }
+        }
+
+        //[HttpGet]
+        //public async Task<IActionResult> CreateRole() {
+        //    var result = accountServiceAsync.CreateRoles();
+        //    if (result.IsCompletedSuccessfully)
+        //    {
+        //        return Ok(new { Message = "Success" });
+        //    }
+        //    return NoContent();
+        //}
+        private async Task<IActionResult> UserLogin(SignInModel model)
+        { 
+            SignInResultUser sru = await accountServiceAsync.LoginAsync(model);
+            var result = sru.SignResult;
             if (!result.Succeeded)
             {
                 return Unauthorized(new { Message = "Invalid Username and password" });
@@ -58,7 +82,7 @@ namespace IMovieCRMAPI.Controllers
             //list of claims
             var authCalims = new List<Claim> {
                 new Claim(ClaimTypes.Name,model.Email),
-                 new Claim(ClaimTypes.Country,"USA"),
+                 new Claim(ClaimTypes.Role,"RUser"),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
                 };
             //key
@@ -67,12 +91,48 @@ namespace IMovieCRMAPI.Controllers
             var token = new JwtSecurityToken(
                 issuer: configuration["JWT:ValidIssuer"],
                 audience: configuration["JWT:ValidAudiene"],
-                expires:DateTime.Now.AddDays(1),
-                claims:authCalims,
-                signingCredentials: new SigningCredentials(authKey,SecurityAlgorithms.HmacSha256Signature)
+                expires: DateTime.Now.AddDays(1),
+                claims: authCalims,
+                signingCredentials: new SigningCredentials(authKey, SecurityAlgorithms.HmacSha256Signature)
                 );
             var t = new JwtSecurityTokenHandler().WriteToken(token);
-            return Ok(new {  t});
+            var uid = sru.UserId;
+            return Ok(new { t,uid});
+        }
+
+        [HttpPost("AdminLogin")]
+
+
+        //           "email": "MMuser@example.com",
+        //"password": "MMstring123."
+       private async Task<IActionResult> AdminLogin(SignInModel model) { 
+         SignInResultUser sru = await accountServiceAsync.LoginAsync(model);
+        var result = sru.SignResult;
+            if (!result.Succeeded)
+            {
+                return Unauthorized(new { Message = "Invalid Username and password" });
+            }
+            //list of claims
+            var authCalims = new List<Claim> {
+                new Claim(ClaimTypes.Name,model.Email),
+                 new Claim(ClaimTypes.Role,"Admin"),
+                new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
+                };
+            //key
+
+            var authKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration["JWT:Secret"]));
+            var token = new JwtSecurityToken(
+                issuer: configuration["JWT:ValidIssuer"],
+                audience: configuration["JWT:ValidAudiene"],
+                expires: DateTime.Now.AddDays(1),
+                claims: authCalims,
+                signingCredentials: new SigningCredentials(authKey, SecurityAlgorithms.HmacSha256Signature)
+                );
+            var t = new JwtSecurityTokenHandler().WriteToken(token);
+      
+            var uid = sru.UserId;
+            return Ok(new { t, uid });
         }
     }
 }
+
