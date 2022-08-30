@@ -4,7 +4,7 @@
 
 namespace Antra.IMovie.Infrascruture.Migrations
 {
-    public partial class removeidfromappuser : Migration
+    public partial class intial3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

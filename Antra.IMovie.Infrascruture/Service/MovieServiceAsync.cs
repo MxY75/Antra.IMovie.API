@@ -189,6 +189,30 @@ namespace Antra.IMovie.Infrascruture.Service
 
         }
 
+        public Task<int> InsertMoviw(AddMovieModel movieModel)
+        {
+            Movie movie = new Movie();
+            if (movieModel != null)
+            {
+                movie.Title = movieModel.Title;
+                movie.Overview = movieModel.Overview;
+                movie.Tagline = movieModel.Tagline;
+                movie.ImdbUrl = movieModel.ImdbUrl;
+                movie.Budget = movieModel.Budget;
+                movie.Revenue = movieModel.Revenue;
+                movie.PosterUrl = movieModel.PosterUrl;
+                movie.BackdropUrl = movieModel.BackdropUrl;
+                movie.ImdbUrl = movieModel.ImdbUrl;
+                movie.TmdbUrl = movieModel.TmdbUrl;
+                movie.OriginalLanguage = movieModel.OriginalLanguage; ;
+                movie.ReleaseDate = movieModel.ReleaseDate;
+                movie.Runtime = movieModel.Runtime;
+                movie.CreatedDate = DateTime.Now;
+                movie.UpdatedDate = DateTime.Now;
+            }
+            return movieRepositoryAsync.InsertAsync(movie);
+            }
+
         public Task<List<MovieResponseModel>> MoviesSameGenreAsync(int id)
         {
             throw new NotImplementedException();

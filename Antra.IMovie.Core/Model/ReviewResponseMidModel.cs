@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Antra.IMovie.Core.Model
 {
-    public class ReviewResponseModel
+    public class ReviewResponseMidModel
     {
-        public int UserId { get; set; }
+        public int MovieId { get; set; }
 
-        public List<ReviewListModel> reviewList = new List<ReviewListModel>();
+        public List<ReviewListMidModel> reviewList = new List<ReviewListMidModel>();
 
     }
 
-    public class ReviewListModel
+    public class ReviewListMidModel
     {
-        public int MovieId { get; set; }
+        public int UserId { get; set; }
         public string ReviewText { get; set; }
         public decimal Rating { get; set; }
         public int Id { get; set; }

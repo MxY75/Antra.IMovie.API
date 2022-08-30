@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Antra.IMovie.Core.Entity
 {
-    public class AppUser : IdentityUser
+    public class AppUser : IdentityUser<int>
     { 
 
       

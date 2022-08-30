@@ -21,7 +21,10 @@ namespace Antra.IMovie.Infrascruture.Service
             userManager = um;
         }
 
-  
+        public async Task<IdentityResult> CreateRole()
+        {
+           return await  accountRepository.CreateRole();
+        }
 
         public async Task<SignInResultUser> LoginAsync(SignInModel model)
         {
@@ -41,12 +44,9 @@ namespace Antra.IMovie.Infrascruture.Service
 
         public async Task<IdentityResult> SignUpAsync(SignUpModel model )
         {
-            IdentityResult  result = await accountRepository.SignUpAsync(model);
-            if (result.Succeeded) {
-                var usere = await userManager.FindByEmailAsync(model.Email);
-                result =  await userManager.AddToRoleAsync(usere, "Regular");
-            }
-            return result;
+            
+           return  await accountRepository.SignUpAsync(model);
+            
         }
     }
 }

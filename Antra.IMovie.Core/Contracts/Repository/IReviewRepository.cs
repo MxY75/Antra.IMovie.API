@@ -14,5 +14,6 @@ namespace Antra.IMovie.Core.Contracts.Repository
 
         Task<Review> GetReviewbyMidUid(int mid, int uid);
         Task<IEnumerable<Review>> GetAllReviewsByUserId(int uid);
+        Task<IEnumerable<Review>> GetAllReviewsByMid(int mid);
     }
 }

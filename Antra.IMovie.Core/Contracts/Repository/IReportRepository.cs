@@ -12,6 +12,6 @@ namespace Antra.IMovie.Core.Contracts.Repository
     {
         Task<PagedResult<Movie>> GetTopPurchasedMovies(DateTime? fromDate = null,
         DateTime? toDate = null, int pageSize = 30, int pageIndex = 1);
-        Task<List<Movie>> GetTopPurchasedMoviesNoPage();
+        Task<List<ReportTopPurchaseModel>> GetTopPurchasedMoviesNoPage(DateTime? fromDate = null, DateTime? toDate = null);
     }
 }

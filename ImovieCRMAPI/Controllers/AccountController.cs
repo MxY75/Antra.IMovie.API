@@ -24,6 +24,7 @@ namespace IMovieCRMAPI.Controllers
 
         }
 
+
         [HttpPost]
         [Route("signup")]
         public async Task<IActionResult> SignUpAsync(SignUpModel model)
@@ -33,7 +34,7 @@ namespace IMovieCRMAPI.Controllers
             var result = await accountServiceAsync.SignUpAsync(model);
             if (result.Succeeded)
             {
-                return Ok(new { Message = "Usre has been created successfully " });
+                return Ok(1);
             }
             StringBuilder sb = new StringBuilder();
             foreach (var item in result.Errors)
@@ -46,9 +47,12 @@ namespace IMovieCRMAPI.Controllers
 
 
         //           "email": "MMuser@example.com",
-        //"password": "MMstring123."
-  //          "email": "admin@example.com",
-  //"password": "AAdmin123."
+ //       //"password": "MMstring123."
+ //"firstName": "string",
+ // "lastName": "string",
+ // "email": "admin@example.com",
+ // "password": "AAstring123.",
+ // "confirmPassword": "AAstring123."
 
         public async Task<IActionResult> Login(SignInModel model)
         {
@@ -82,7 +86,7 @@ namespace IMovieCRMAPI.Controllers
             //list of claims
             var authCalims = new List<Claim> {
                 new Claim(ClaimTypes.Name,model.Email),
-                 new Claim(ClaimTypes.Role,"RUser"),
+                new Claim(ClaimTypes.Role,"RUser"),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
                 };
             //key
@@ -115,7 +119,7 @@ namespace IMovieCRMAPI.Controllers
             //list of claims
             var authCalims = new List<Claim> {
                 new Claim(ClaimTypes.Name,model.Email),
-                 new Claim(ClaimTypes.Role,"Admin"),
+                new Claim(ClaimTypes.Role,"Admin"),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
                 };
             //key
@@ -132,6 +136,17 @@ namespace IMovieCRMAPI.Controllers
       
             var uid = sru.UserId;
             return Ok(new { t, uid });
+        }
+
+        [HttpGet("CR")]
+        public  async Task<IActionResult> createRole() {
+
+            var result = await accountServiceAsync.CreateRole();
+
+            if (result.Succeeded) {
+                return Ok(new { Message = "created!" });
+            }
+            return BadRequest();
         }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Antra.IMovie.Infrascruture.Migrations
 {
-    public partial class authentication : Migration
+    public partial class intial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,8 @@ namespace Antra.IMovie.Infrascruture.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -27,7 +28,8 @@ namespace Antra.IMovie.Infrascruture.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "varchar(30)", nullable: false),
                     LastName = table.Column<string>(type: "varchar(30)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -56,14 +58,27 @@ namespace Antra.IMovie.Infrascruture.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "Varchar(100)", maxLength: 100, nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TmdbUrl = table.Column<string>(type: "varchar(124)", nullable: false),
-                    ProfilePath = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TmdbUrl = table.Column<string>(type: "Varchar(100)", maxLength: 100, nullable: false),
+                    ProfilePath = table.Column<string>(type: "Varchar(130)", maxLength: 130, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cast", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Genre",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "Varchar(20)", maxLength: 20, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Genre", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,23 +87,23 @@ namespace Antra.IMovie.Infrascruture.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Overview = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Tagline = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "Varchar(100)", maxLength: 100, nullable: false),
+                    Overview = table.Column<string>(type: "Varchar(2048)", maxLength: 2048, nullable: false),
+                    Tagline = table.Column<string>(type: "Varchar(512)", maxLength: 512, nullable: false),
                     Budget = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Revenue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PosterUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BackdropUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImdbUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TmdbUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OriginalLanguage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PosterUrl = table.Column<string>(type: "Varchar(2048)", maxLength: 2048, nullable: false),
+                    BackdropUrl = table.Column<string>(type: "Varchar(2048)", maxLength: 2048, nullable: false),
+                    ImdbUrl = table.Column<string>(type: "Varchar(2048)", maxLength: 2048, nullable: false),
+                    TmdbUrl = table.Column<string>(type: "Varchar(2048)", maxLength: 2048, nullable: false),
+                    OriginalLanguage = table.Column<string>(type: "Varchar(64)", maxLength: 64, nullable: false),
                     ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Runtime = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateBy = table.Column<string>(type: "Varchar(48)", maxLength: 48, nullable: true),
+                    CreatedBy = table.Column<string>(type: "Varchar(48)", maxLength: 48, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -101,7 +116,7 @@ namespace Antra.IMovie.Infrascruture.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "varchar", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -114,13 +129,13 @@ namespace Antra.IMovie.Infrascruture.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FirstName = table.Column<string>(type: "Varchar(128)", maxLength: 128, nullable: true),
+                    LastName = table.Column<string>(type: "Varchar(128)", maxLength: 128, nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HashedPassword = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Salt = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "Varchar(256)", maxLength: 256, nullable: true),
+                    HashedPassword = table.Column<string>(type: "Varchar(1024)", maxLength: 1024, nullable: true),
+                    Salt = table.Column<string>(type: "Varchar(1024)", maxLength: 1024, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "Varchar(16)", maxLength: 16, nullable: true),
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: true),
                     LockoutEndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastLoginDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -138,7 +153,7 @@ namespace Antra.IMovie.Infrascruture.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -159,7 +174,7 @@ namespace Antra.IMovie.Infrascruture.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -181,7 +196,7 @@ namespace Antra.IMovie.Infrascruture.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -198,8 +213,8 @@ namespace Antra.IMovie.Infrascruture.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -222,7 +237,7 @@ namespace Antra.IMovie.Infrascruture.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -234,6 +249,80 @@ namespace Antra.IMovie.Infrascruture.Migrations
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MovieCast",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MovieId = table.Column<int>(type: "int", nullable: false),
+                    CastId = table.Column<int>(type: "int", nullable: false),
+                    Character = table.Column<string>(type: "Varchar(450)", maxLength: 450, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MovieCast", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MovieCast_Cast_CastId",
+                        column: x => x.CastId,
+                        principalTable: "Cast",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MovieCast_Movie_MovieId",
+                        column: x => x.MovieId,
+                        principalTable: "Movie",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MovieGenre",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MovieId = table.Column<int>(type: "int", nullable: false),
+                    GenreId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MovieGenre", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MovieGenre_Genre_GenreId",
+                        column: x => x.GenreId,
+                        principalTable: "Genre",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MovieGenre_Movie_MovieId",
+                        column: x => x.MovieId,
+                        principalTable: "Movie",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Trailer",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "Varchar(100)", maxLength: 100, nullable: true),
+                    TrailerUrl = table.Column<string>(type: "Varchar(1024)", maxLength: 1024, nullable: true),
+                    MovieId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trailer", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Trailer_Movie_MovieId",
+                        column: x => x.MovieId,
+                        principalTable: "Movie",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -302,7 +391,7 @@ namespace Antra.IMovie.Infrascruture.Migrations
                     MovieId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Rating = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ReviewText = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ReviewText = table.Column<string>(type: "Varchar(2048)", maxLength: 2048, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -397,6 +486,26 @@ namespace Antra.IMovie.Infrascruture.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MovieCast_CastId",
+                table: "MovieCast",
+                column: "CastId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MovieCast_MovieId",
+                table: "MovieCast",
+                column: "MovieId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MovieGenre_GenreId",
+                table: "MovieGenre",
+                column: "GenreId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MovieGenre_MovieId",
+                table: "MovieGenre",
+                column: "MovieId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Purchase_MovieId",
                 table: "Purchase",
                 column: "MovieId");
@@ -415,6 +524,11 @@ namespace Antra.IMovie.Infrascruture.Migrations
                 name: "IX_Review_UserId",
                 table: "Review",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Trailer_MovieId",
+                table: "Trailer",
+                column: "MovieId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRole_RoleId",
@@ -445,16 +559,22 @@ namespace Antra.IMovie.Infrascruture.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Cast");
+                name: "Favorites");
 
             migrationBuilder.DropTable(
-                name: "Favorites");
+                name: "MovieCast");
+
+            migrationBuilder.DropTable(
+                name: "MovieGenre");
 
             migrationBuilder.DropTable(
                 name: "Purchase");
 
             migrationBuilder.DropTable(
                 name: "Review");
+
+            migrationBuilder.DropTable(
+                name: "Trailer");
 
             migrationBuilder.DropTable(
                 name: "UserRole");
@@ -464,6 +584,12 @@ namespace Antra.IMovie.Infrascruture.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Cast");
+
+            migrationBuilder.DropTable(
+                name: "Genre");
 
             migrationBuilder.DropTable(
                 name: "Movie");

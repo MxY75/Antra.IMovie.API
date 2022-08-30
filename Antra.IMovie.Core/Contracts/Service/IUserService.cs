@@ -12,20 +12,22 @@ namespace Antra.IMovie.Core.Contracts.Service
     {
         Task<int> InsertUser(UserPostModel user);
         Task<IEnumerable<UserGetModel>> GetAllUsers();
-        Task<bool> PurchaseMovie(PurchaseRequestModel purchaseRequest, int userId);
-        Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest, int userId);
-        Task<IEnumerable<PurchaseModel>> GetAllPurchasesForUser(int id);
+        Task<int> PurchaseMovie(int uid, int mid);
+        Task<bool> IsMoviePurchased(int uid, int mid);
+        Task<IEnumerable<PurchaeMovieModel>> GetAllPurchasesForUser(int id);
         Task<PurchaseDetailsResponseModel> GetPurchasesDetails(int userId, int movieId);
 
        Task<int> AddFavorite(FavoriteRequestModel favoriteRequest);
-        Task<int> RemoveFavorite(FavoriteRequestModel favoriteRequest);
+        Task<int> RemoveFavorite(int uid, int mid);
         Task<bool> FavoriteExists(int mid, int uid);
         Task<FavoriteResponseModel> GetAllFavoritesForUser(int id);
+        Task<bool> IsMovieFavorited(int uid, int mid);
 
         Task<int>AddMovieReview(ReviewRequestModel reviewRequest);
         Task<int> UpdateMovieReview(ReviewRequestModel reviewRequest);
         Task<int> DeleteMovieReview(int userId, int movieId);
-        Task<ReviewResponseModel> GetAllReviewsByUser(int id);
-
+        Task<IEnumerable<ReviewModel>> GetAllReviewsByUser(int id);
+        Task<IEnumerable<ReviewModel>> GetAllReviewsByMid(int mid);
+        Task<UserGetModel> GetUserModelByIdAsync(int id);
     }
 }

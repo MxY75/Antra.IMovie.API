@@ -14,13 +14,13 @@ namespace Antra.IMovie.Infrascruture.Repository
     public class AccountRepository : IAccountRepository {
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
-        private readonly RoleManager<IdentityRole> roleManager;
-        private static int accountNumber = 0;
-        public AccountRepository(UserManager<AppUser>m, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager)
+    //    private readonly RoleManager<IdentityRole> roleManager;
+   
+        public AccountRepository(UserManager<AppUser> m, SignInManager<AppUser> signInManager)
         {
             userManager = m;
             this.signInManager = signInManager;
-            this.roleManager = roleManager; 
+           
         }
 
         public Task<IdentityResult> SignUpAsync(SignUpModel user)
@@ -41,23 +41,27 @@ namespace Antra.IMovie.Infrascruture.Repository
            
         }
 
-        public async Task<IdentityResult> CreateRoles()
+        public async Task<IdentityResult> CreateRole()
         {
-            IdentityResult roleResult = new IdentityResult();
-            string[] roleNames = { "Admin", "Regular" };
-            foreach (var roleName in roleNames)
-            {
-               
-                    var role = new IdentityRole
-                    {
-                        Name = roleName
-                    };
-                    roleResult = await roleManager.CreateAsync(role);
-                
-            }
-            return roleResult; 
+            //IdentityResult roleResult = new IdentityResult();
+            //string[] roleNames = { "Admin", "Regular" };
+            //foreach (var roleName in roleNames)
+            //{
+
+            //    var role = new IdentityRole
+            //    {
+            //        Name = roleName
+            //    };
+            //    roleResult = await roleManager.CreateAsync(role);
+
+            //}
+            //return roleResult;
+
+            throw new NotImplementedException();
         }
 
-      
+       
+
+
     }       
 }

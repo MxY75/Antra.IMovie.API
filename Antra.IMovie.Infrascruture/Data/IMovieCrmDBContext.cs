@@ -6,10 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Antra.IMovie.Core.Entity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Antra.IMovie.Infrascruture.Data
 {
-    public class IMovieCrmDBContext : IdentityDbContext<AppUser>
+    public class IMovieCrmDBContext : IdentityDbContext<AppUser,IdentityRole<int>, int>
+
     {
 
         //Why we are doing it connection string in mvc objct 

@@ -85,16 +85,30 @@ namespace Antra.IMovie.Infrascruture.Service
 
             return userRepository.InsertAsync(entity);
         }
-
-
-        public async Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest, int userId)
+        public async Task<bool> IsMovieFavorited(int uid, int mid)
         {
-            var purchases = await userRepository.GetPurchasesByUserid(userId);
+            var result = favoriteRepository.GetAllFavoritesByUserId(uid);
+            if (result != null)
+            {
+                foreach (var entity in await result)
+                {
+                    if (entity.MovieId == mid)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public async Task<bool> IsMoviePurchased(int uid, int mid)
+        {
+            var purchases = await userRepository.GetPurchasesByUserid(uid);
             if (purchases != null)
             {
                 foreach (var entity in purchases)
                 {
-                    if (entity.MovieId == purchaseRequest.MovieId) {
+                    if (entity.MovieId == mid) {
                         return true;
                     }
                 }
@@ -104,25 +118,34 @@ namespace Antra.IMovie.Infrascruture.Service
 
 
 
-        public async Task<bool> PurchaseMovie(PurchaseRequestModel purchase, int userId)
+        public  Task<int> PurchaseMovie(int uid, int mid)
         {
-            Purchase entity = new Purchase();
-            Movie movie = await movieRepository.GetByIdAsync(purchase.MovieId);
-            entity.MovieId = purchase.MovieId;
-            entity.UserId = userId;
-            entity.PurchaseNumber = (Guid)purchase.PurchaseNumber;
+            //Purchase entity = new Purchase();
+            //Movie movie = await movieRepository.GetByIdAsync(purchase.MovieId);
+            //entity.MovieId = purchase.MovieId;
+            //entity.UserId = userId;
+            //entity.PurchaseNumber = (Guid)purchase.PurchaseNumber;
 
-            if (movie.Price == null)
-                entity.TotalPrice = 8.9m;
-            if (purchase.PurchaseDateTime != null) {
-                entity.PurchaseDateTime = (DateTime)purchase.PurchaseDateTime;
-            }
+            //if (movie.Price == null)
+            //    entity.TotalPrice = 8.9m;
+            //if (purchase.PurchaseDateTime != null) {
+            //    entity.PurchaseDateTime = (DateTime)purchase.PurchaseDateTime;
+            //}
+            //entity.PurchaseDateTime = DateTime.Now;
+            //int insertSuccess = await purchaseRepostiry.InsertAsync(entity);
+            //if (insertSuccess > 0) {
+            //    return true;
+            //
+
+            //return false;
+            Purchase entity = new Purchase();
+            var guid = Guid.NewGuid();
+            entity.MovieId = mid;
+            entity.UserId = uid;
+            entity.PurchaseNumber = guid;
+            entity.TotalPrice = 9.9m;
             entity.PurchaseDateTime = DateTime.Now;
-            int insertSuccess = await purchaseRepostiry.InsertAsync(entity);
-            if (insertSuccess > 0) {
-                return true;
-            }
-            return false;
+            return purchaseRepostiry.InsertAsync(entity);
         }
         public async Task<PurchaseDetailsResponseModel> GetPurchasesDetails(int userId, int movieId)
         {
@@ -144,19 +167,26 @@ namespace Antra.IMovie.Infrascruture.Service
 
         }
         
-        public async Task<IEnumerable<PurchaseModel>> GetAllPurchasesForUser(int uid)
+        public async Task<IEnumerable<PurchaeMovieModel>> GetAllPurchasesForUser(int uid)
         {
            var result = await userRepository.GetPurchasesByUserid(uid);
-            List<PurchaseModel> purchaseModels = new List<PurchaseModel>();
+            
+            List<PurchaeMovieModel> purchaseModels = new List<PurchaeMovieModel>();
             if (result != null) {
                 foreach (var entity in result) {
-                    PurchaseModel model = new PurchaseModel();
+                    MovieModel movieentity = await movieService.GetByIdAsync(entity.MovieId);
+                    PurchaeMovieModel model = new PurchaeMovieModel();
                     model.Id = entity.Id;
                     model.UserId = entity.UserId;
                     model.PurchaseNumber = entity.PurchaseNumber;
                     model.MovieId = entity.MovieId;
                     model.TotalPrice = entity.TotalPrice;
-                    model.PurchaseDateTime = model.PurchaseDateTime;
+                    string st = "";
+                    st = entity.PurchaseDateTime.ToString("yyyy-MM-dd");
+                    model.PurchaseDateTime = DateTime.Parse(st);
+                    //movie info
+                    model.PosterUrl = movieentity.PosterUrl;
+                    model.Title = movieentity.Title;
                     purchaseModels.Add(model);
                 }
                 return purchaseModels;
@@ -179,15 +209,13 @@ namespace Antra.IMovie.Infrascruture.Service
             return - 1;
         }
 
-        public async Task<int> RemoveFavorite(FavoriteRequestModel favoriteRequest)
+        public async Task<int> RemoveFavorite(int uid,int mid)
         {
-            if (favoriteRequest == null) { 
-                return -1;
-            }
-            bool isExists = await FavoriteExists( favoriteRequest.MovieId, favoriteRequest.UserId);
+          
+            bool isExists = await FavoriteExists( mid,uid);
 
             if (isExists) {
-                Favorite entity = await favoriteRepository.GetFavoritebyMidUid(favoriteRequest.MovieId, favoriteRequest.UserId);
+                Favorite entity = await favoriteRepository.GetFavoritebyMidUid(mid,uid);
                 return await favoriteRepository.Delete(entity.Id);
 
             }
@@ -260,21 +288,42 @@ namespace Antra.IMovie.Infrascruture.Service
             return await reviewRepository.Delete(entity.Id);
         }
 
-        public async Task<ReviewResponseModel> GetAllReviewsByUser(int id)
+        public async Task<IEnumerable<ReviewModel>> GetAllReviewsByUser(int uid)
         {
-            var result =await reviewRepository.GetAllReviewsByUserId(id);
-            ReviewResponseModel model = new ReviewResponseModel();
-            model.reviewList = new List<ReviewListModel>();
+            var result =await reviewRepository.GetAllReviewsByUserId(uid);
+            List<ReviewModel> reviewList = new List<ReviewModel> ();
             if (result != null) {
                 foreach (Review entity in result) {
-                    model.UserId = entity.UserId;
-                    ReviewListModel listModel = new ReviewListModel();
+                    ReviewModel listModel = new ReviewModel();
+                    listModel.UserId = entity.UserId;
                     listModel.MovieId = entity.MovieId;
                     listModel.ReviewText = entity.ReviewText;
                     listModel.Rating = entity.Rating;
-                    model.reviewList.Add(listModel);
+                    listModel.Id = entity.Id;
+                    reviewList.Add(listModel);
                 }
-                return model;
+                return reviewList;
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<ReviewModel>> GetAllReviewsByMid(int mid)
+        {
+            var result = await reviewRepository.GetAllReviewsByMid(mid);
+            List<ReviewModel> reviewList = new List<ReviewModel>();
+            if (result != null)
+            {
+                foreach (Review entity in result)
+                {
+                    ReviewModel listModel = new ReviewModel();
+                    listModel.UserId = entity.UserId;
+                    listModel.MovieId = entity.MovieId;
+                    listModel.ReviewText = entity.ReviewText;
+                    listModel.Rating = entity.Rating;
+                    listModel.Id = entity.Id;
+                    reviewList.Add(listModel);
+                }
+                return reviewList;
             }
             return null;
         }

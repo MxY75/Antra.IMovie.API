@@ -20,26 +20,7 @@ namespace Antra.IMovie.Infrascruture.Service
             this.reportRepository = reportRepository;
         }
 
-        public async Task<List<MovieReportModel>> GetTopPurchasedMoviesNoPage()
-        {
-           
-                var topRatedMovies = await reportRepository.GetTopPurchasedMoviesNoPage();
-
-                var movieCards = new List<MovieReportModel>();
-                foreach (var movie in topRatedMovies)
-                {
-                    movieCards.Add(new MovieReportModel
-                    {
-                        Id = movie.Id,
-                        Title = movie.Title,
-                        PosterUrl = movie.PosterUrl
-                    });
-                }
-
-                return movieCards;
-
-
-        }
+       
 
         public async Task<PagedResult<MovieReportModel>> GetTopPurchasedMovies(DateTime? fromDate = null, DateTime? toDate = null, int pageSize = 30, int pageIndex = 1)
         {
@@ -54,6 +35,9 @@ namespace Antra.IMovie.Infrascruture.Service
             return new PagedResult<MovieReportModel>(movieCards, pageSize, pageIndex, pagedReport.Count);
         }
 
-  
+        public async Task<List<ReportTopPurchaseModel>> GetTopPurchasedMoviesNoPage(DateTime? fromDate = null, DateTime? toDate = null)
+        {
+            return await reportRepository.GetTopPurchasedMoviesNoPage(fromDate, toDate);
+        }
     }
 }

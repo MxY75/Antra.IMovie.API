@@ -17,9 +17,9 @@ namespace IMovieCRMAPI.Controllers
         }
 
         [HttpGet("topPurchase")]
-        public async Task<IActionResult> GetTopPurchase()
+        public async Task<IActionResult> GetTopPurchase(DateTime? fromDate = null, DateTime? toDate = null)
         {
-            var result = await reportService.GetTopPurchasedMoviesNoPage();
+            var result = await reportService.GetTopPurchasedMoviesNoPage(fromDate,toDate);
             if (result != null)
             {
                 return Ok(result);

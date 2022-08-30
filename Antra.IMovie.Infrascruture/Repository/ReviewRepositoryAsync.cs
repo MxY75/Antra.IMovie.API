@@ -18,9 +18,14 @@ namespace Antra.IMovie.Infrascruture.Repository
             movieContext = _context;
         }
 
+        public async Task<IEnumerable<Review>> GetAllReviewsByMid(int mid)
+        {
+            return await movieContext.Review.Where(r => r.MovieId== mid).OrderByDescending(r=>r.Id).ToArrayAsync();
+        }
+
         public async Task<IEnumerable<Review>> GetAllReviewsByUserId(int uid)
         {
-            return await movieContext.Review.Where(r => r.UserId == uid).ToArrayAsync();
+            return await movieContext.Review.Where(r => r.UserId == uid).OrderByDescending(r => r.Id).ToArrayAsync();
         }
 
             public async Task<Review> GetReviewbyMidUid(int mid, int uid)

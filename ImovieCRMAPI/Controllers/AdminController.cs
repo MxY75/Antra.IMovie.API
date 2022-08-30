@@ -7,7 +7,7 @@ namespace IMovieCRMAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+ 
     public class AdminController : ControllerBase
     {
         IUserService userService;

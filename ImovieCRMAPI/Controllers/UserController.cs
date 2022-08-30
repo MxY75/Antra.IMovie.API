@@ -11,31 +11,31 @@ namespace IMovieCRMAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "RUser")]
+ //   [Authorize(Roles ="RUser")]
     public class UserController : ControllerBase
     {
 
         IUserService userService;
       
+
         public UserController(IUserService userService)
         {
             this.userService = userService;
         }
 
-        [HttpPost("userRegister")]
-        public async Task<IActionResult> Post(UserPostModel userModel)
+   
+        [HttpGet("GetUserInfoByUid")]
+        public async Task<IActionResult> GetUserInfoByUid(int uid)
         {
-            if (ModelState.IsValid)
+           var result = await userService.GetUserModelByIdAsync(uid);
+            if (result != null)
             {
-                if (await userService.InsertUser(userModel) > 0)
-                {
-                    return Ok(userModel);
-                }
+                return Ok(result);
             }
             return BadRequest();
-
         }
-   
+
+        
 
         [HttpGet("GetAllPurchaseByuserId")]
         public async Task<IActionResult> GetAllPurchaseByuserId(int id)
@@ -60,37 +60,55 @@ namespace IMovieCRMAPI.Controllers
             return BadRequest();
         }
         [HttpPost("addPurchase")]
-        public async Task<IActionResult> PostAddPurchase(PurchaseRequestModel model, int uid)
+
+        public async Task<IActionResult> PostAddPurchase(UidOtherIdModel idModel)
         {
-            bool isPurchased = false;
-            bool isInsert = false;
-            isPurchased = await userService.IsMoviePurchased(model, uid);
-            if (!isPurchased)
+            if (await userService.PurchaseMovie(idModel.Uid, idModel.Oid) > 0)
             {
-                isInsert = await userService.PurchaseMovie(model, uid);
+                return Ok(1);
             }
-            if (isInsert)
-                return Ok();
-            return BadRequest("Invalid data.");
+            return BadRequest();
+
         }
+        [HttpPost("CheckisPurchased")]
+        public async Task<IActionResult> isPurchased(UidOtherIdModel idModel)
+        {
+            if (await userService.IsMoviePurchased(idModel.Uid, idModel.Oid))
+            {
+                return Ok(true);
+            }
+            return Ok(false);
+
+        }
+
         [HttpPost("addFavorite")]
         public async Task<IActionResult> PostAddFavorite(FavoriteRequestModel model)
         {
             var result = await userService.AddFavorite(model);
             if (result > 0)
-                return Ok(model);
+                return Ok(1);
             return BadRequest();
         }
         [HttpDelete("removieFavorite")]
-        public async Task<IActionResult> DeleteFavorite(FavoriteRequestModel model)
+        public async Task<IActionResult> DeleteFavorite(int uid,int mid)
         {
-            var result = await userService.RemoveFavorite(model);
+            var result = await userService.RemoveFavorite(uid,mid);
             if (result > 0)
             {
                 var response = new { Message = "Favorite Deleted Successfully" };
                 return Ok(response);
             }
             return BadRequest();
+        }
+        [HttpPost("CheckisFavorite")]
+        public async Task<IActionResult> isFav(FavoriteRequestModel idModel)
+        {
+            if (await userService.IsMovieFavorited(idModel.UserId, idModel.MovieId))
+            {
+                return Ok(true);
+            }
+            return Ok(false);
+
         }
 
         [HttpGet("UserAllFavorites")]
@@ -101,10 +119,21 @@ namespace IMovieCRMAPI.Controllers
                 return NotFound($"This user doesn't have favorite movies ");
             return Ok(result);
         }
+        [HttpGet("MovieAllReview")]
+        public async Task<IActionResult> GetAllReviewsByMovie(int mid)
+        {
+            var result = await userService.GetAllReviewsByMid(mid);
+            if (result == null)
+                return NotFound($"This Movie doesn't write any review ");
+            return Ok(result);
+
+        }
+
+
         [HttpGet("UserAllReview")]
         public async Task<IActionResult> GetAllReviewsByUser(int uid)
         {
-            var result = await userService.GetAllFavoritesForUser(uid);
+            var result = await userService.GetAllReviewsByUser(uid);
             if (result == null)
                 return NotFound($"This user doesn't write any review ");
             return Ok(result);
@@ -123,7 +152,7 @@ namespace IMovieCRMAPI.Controllers
         [HttpDelete("DeleteReview")]
         public async Task<IActionResult> Delete(int uid, int mid)
         {
-            var response = new { Message = "deleted" };
+            var response = 1;
             if (await userService.DeleteMovieReview(uid, mid) > 0)
                 return Ok(response);
             return NoContent();
@@ -134,7 +163,7 @@ namespace IMovieCRMAPI.Controllers
         {
             if (await userService.AddMovieReview(model) > 0)
             {
-                return Ok(model);
+                return Ok(1);
             }
             return BadRequest();
 

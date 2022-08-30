@@ -23,8 +23,8 @@ namespace Antra.IMovie.Infrascruture.Repository
 
         public async Task<PagedResult<Movie>> GetTopPurchasedMovies(DateTime? fromDate = null, DateTime? toDate = null, int pageSize = 30, int pageIndex = 1)
         {
-            var movies = await movieContext.Purchase.Include(p => p.Movie).GroupBy(p => new { p.MovieId, p.Movie.PosterUrl, p.Movie.Title })
-               .OrderByDescending(m => m.Sum(p => p.TotalPrice)).Select(m => new Movie
+            var movies = await movieContext.Purchase.Include(p => p.Movie).Where(p =>p.PurchaseDateTime >= fromDate). Where(p=>p.PurchaseDateTime <= toDate).GroupBy(p => new { p.MovieId, p.Movie.PosterUrl, p.Movie.Title })
+               .OrderByDescending(p=> p.Count()).Select(m => new Movie
                {
                    Id = m.Key.MovieId,
                    PosterUrl = m.Key.PosterUrl,
@@ -36,21 +36,25 @@ namespace Antra.IMovie.Infrascruture.Repository
             return result;
         }
 
-        public async Task<List<Movie>> GetTopPurchasedMoviesNoPage()
+        public async Task<List<ReportTopPurchaseModel>> GetTopPurchasedMoviesNoPage(DateTime? fromDate = null, DateTime? toDate = null)
         {
-            var topPurchasedMovies = await movieContext.Purchase.Include(p => p.Movie).GroupBy(p => new { p.MovieId, p.Movie.PosterUrl, p.Movie.Title })
-                 .OrderByDescending(m => m.Sum(p => p.TotalPrice)).Select(m => new Movie
+            var topPurchasedMovies = await movieContext.Purchase.Include(p => p.Movie).Where(p => p.PurchaseDateTime >= fromDate).Where(p => p.PurchaseDateTime <= toDate).GroupBy(p => new { p.MovieId, p.Movie.PosterUrl, p.Movie.Title })
+                 .OrderByDescending(m => m.Count()).Select(m => new
                  {
-                     Id = m.Key.MovieId,
-                     PosterUrl = m.Key.PosterUrl,
+
                      Title = m.Key.Title,
-                 }).ToListAsync();
+                     Count = m.Count()
 
-            return topPurchasedMovies;
-        }
-
-     
-
- 
+                 }).Take(30).ToListAsync();
+            List<ReportTopPurchaseModel> list = new List<ReportTopPurchaseModel>();
+            foreach (var item in topPurchasedMovies)
+            {
+                ReportTopPurchaseModel model = new ReportTopPurchaseModel();
+                model.Title = item.Title;
+                model.Count = item.Count;
+                list.Add(model);
+            }
+                return list;
+            }
     }
 }

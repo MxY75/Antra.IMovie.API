@@ -14,6 +14,7 @@ namespace Antra.IMovie.Core.Contracts.Service
        
         Task<IdentityResult> SignUpAsync(SignUpModel model);
         Task<SignInResultUser> LoginAsync(SignInModel model);
+        Task<IdentityResult> CreateRole();
 
 
 
